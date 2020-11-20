@@ -23,6 +23,7 @@
                     <form action="{{action('FornecedorController@update')}}" method="post">
                         <div class="form">
                             @csrf
+                            <input type="hidden" name="id" value="{{$fornecedor->id}}" />
                             <div class="form-group row justify-content-center">
                                 <div class="col-md-9">
                                     <div class="input-group mb-3">

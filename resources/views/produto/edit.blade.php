@@ -23,6 +23,7 @@
                     <form action="{{action('ProdutoController@update')}}" method="post">
                         <div class="form">
                             @csrf
+                            <input type="hidden" name="id" value="{{$produto->id}}" />
                             <div class="form-group row justify-content-center">
                                 <div class="col-md-9">
                                     <div class="input-group mb-3">
@@ -43,7 +44,7 @@
                             <div class="form-group row justify-content-center">
                                 <div class="col-md-9">
                                     <div class="input-group mb-3">
-                                        <textarea class="form-control" placeholder="Descrição (opcional)" value="{{$produto->descricao}}" name="descricao" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                        <textarea required class="form-control" placeholder="Descrição" value="{{$produto->descricao}}" name="descricao" id="exampleFormControlTextarea1" rows="3"></textarea>
                                     </div>
                                 </div>
                             </div>

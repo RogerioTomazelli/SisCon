@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div style="background-color: #222831; color: white"  class="card-header">{{ __('Cadastro de novo fornecedor') }}</div>
+                <div style="background-color: #222831; color: white" class="card-header">{{ __('Registrar a compra do produto') }}</div>
 
                 <div class="card-body">
 
@@ -20,41 +20,32 @@
                     </div>
                     @endif
                     <br>
-                    <form action="{{action('FornecedorController@store')}}" method="post">
+                    <form action="{{action('EstoqueController@store')}}" method="post">
                         <div class="form">
                             @csrf
                             <div class="form-group row justify-content-center">
                                 <div class="col-md-9">
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-building"></i></span>
+                                            <span class="input-group-text"><i class="fa fa-archive"></i></span>
                                         </div>
-                                        <input required class="form-control" type="text" placeholder="Nome da empresa" name="nome" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row justify-content-center">
-                                <div class="col-md-5">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-envelope"></i></span>
-                                        </div>
-                                        <input required class="form-control" type="text" placeholder="Email" name="email" />
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-phone"></i></span>
-                                        </div>
-                                        <input required class="form-control" type="text" placeholder="Telefone" name="telefone" />
+                                        <select class="form-control" name="produto_id">
+                                            @foreach($produtos as $item)
+                                            <option value="{{$item->id}}">{{$item->nome}}</option>
+                                            @endforeach
+                                        </select>
+                                        <select class="form-control" name="fornecedor_id">
+                                            @foreach($fornecedores as $item)
+                                            <option value="{{$item->id}}">{{$item->nome}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row justify-content-center">
                                 <div class="col-md-9">
                                     <div class="input-group mb-3">
-                                        <input required class="form-control" type="text" placeholder="CNPJ" name="cnpj" />
+                                        <input required class="form-control" type="date" name="data" />
                                     </div>
                                 </div>
                             </div>
@@ -62,26 +53,42 @@
                                 <div class="col-md-9">
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text">Endereço</span>
+                                            <span class="input-group-text"><i class="fa fa-cubes"></i></span>
                                         </div>
-                                        <input required class="form-control" type="text" placeholder="Estado" name="estado" />
-                                        <input required class="form-control" type="text" placeholder="Cidade" name="cidade" />
+                                        <input required class="form-control" type="number" placeholder="Quantidade" name="quantidade" />
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row justify-content-center">
                                 <div class="col-md-9">
                                     <div class="input-group mb-3">
-                                        <input required class="form-control" type="text" placeholder="Bairro" name="bairro" />
-                                        <input required class="form-control" type="text" placeholder="Rua" name="rua" />
-                                        <input required class="form-control" type="text" placeholder="Número" name="numero" />
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">R$</span>
+                                        </div>
+                                        <input required class="form-control" type="text" placeholder="Preço unitário" name="preco_unit" />
+                                        <input required class="form-control" type="text" placeholder="Preço total" name="preco_total" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row justify-content-center">
+                                <div class="col-md-9">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-balance-scale"></i></span>
+                                        </div>
+                                        <input required class="form-control" type="text" placeholder="Peso unitário" name="peso_unit" />
+                                        <select class="form-control" name="unidade" id="exampleFormControlSelect1">
+                                            <option value="kg">Quilograma (Kg)</option>
+                                            <option value="g">Grama (g)</option>
+                                            <option value="mg">Miligrama (Mg)</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row justify-content-center">
                                 <div class="col-md-9">
                                     <button class="btn btn-success" type="submit">Salvar</button>
-                                    <a class="btn btn-primary" href="{{url('fornecedor')}}">Voltar</a>
+                                    <a class="btn btn-primary" href="{{url('estoque')}}">Voltar</a>
                                 </div>
                             </div>
                         </div>

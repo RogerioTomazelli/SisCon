@@ -20,7 +20,7 @@
                             </div>
                             <div class="btn-group col-md-4" role="group" aria-label="Basic example">
                                 <button type="submit" class="btn btn-primary">Buscar <i class="fa fa-search"></i></button>
-                                <a href="{{ url('/produto/create')}}" class="btn btn-primary">Cadastrar <i class="fa fa-plus"></i></a>
+                                <a href="{{ url('/produto/create')}}" class="btn btn-primary">Cadastrar produto <i class="fa fa-plus"></i></a>
                             </div>
                         </div>
                     </form>
@@ -33,7 +33,7 @@
                                 <th scope="col">ID</th>
                                 <th scope="col">Nome</th>
                                 <th scope="col">Categoria</th>
-                                <th scope="col">Descrição (opcional)</th>
+                                <th scope="col">Descrição</th>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
                             </tr>

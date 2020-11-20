@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Edição dos dados do fornecedor') }}</div>
+                <div style="background-color: #222831; color: white" class="card-header">{{ __('Registrar a compra do produto') }}</div>
 
                 <div class="card-body">
 
@@ -20,41 +20,39 @@
                     </div>
                     @endif
                     <br>
-                    <form action="{{action('FornecedorController@update')}}" method="post">
+                    <form action="{{action('EstoqueController@update')}}" method="post">
                         <div class="form">
                             @csrf
+                            <input type="hidden" name="id" value="{{$estoque->id}}" />
                             <div class="form-group row justify-content-center">
                                 <div class="col-md-9">
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-building"></i></span>
+                                            <span class="input-group-text"><i class="fa fa-archive"></i></span>
                                         </div>
-                                        <input required class="form-control" type="text" name="nome" value="{{$fornecedor->nome}}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row justify-content-center">
-                                <div class="col-md-5">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-envelope"></i></span>
-                                        </div>
-                                        <input required class="form-control" type="text" name="email" value="{{$fornecedor->email}}">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-phone"></i></span>
-                                        </div>
-                                        <input required class="form-control" type="text" name="telefone" value="{{$fornecedor->telefone}}">
+                                        <select name="produto_id" class="form-control">
+                                            @foreach ($produtos as $item)
+                                            <option value="{{ $item->id }}" @if ($item->id == old('produto_id', $estoque->produto_id))
+                                                selected="selected"
+                                                @endif
+                                                >{{$item->nome}}</option>
+                                            @endforeach
+                                        </select>
+                                        <select name="fornecedor_id" class="form-control">
+                                            @foreach ($fornecedores as $item)
+                                            <option value="{{ $item->id }}" @if ($item->id == old('fornecedor_id', $estoque->fornecedor_id))
+                                                selected="selected"
+                                                @endif
+                                                >{{$item->nome}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row justify-content-center">
                                 <div class="col-md-9">
                                     <div class="input-group mb-3">
-                                        <input required class="form-control" type="text" name="cnpj" value="{{$fornecedor->cnpj}}">
+                                        <input required class="form-control" type="date" name="data" value="{{$estoque->data}}" />
                                     </div>
                                 </div>
                             </div>
@@ -62,26 +60,42 @@
                                 <div class="col-md-9">
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text">Endereço</span>
+                                            <span class="input-group-text"><i class="fa fa-cubes"></i></span>
                                         </div>
-                                        <input required class="form-control" type="text" name="estado" value="{{$fornecedor->estado}}">
-                                        <input required class="form-control" type="text" name="cidade" value="{{$fornecedor->cidade}}">
+                                        <input required class="form-control" type="number" placeholder="Quantidade" value="{{$estoque->quantidade}}" name="quantidade" />
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row justify-content-center">
                                 <div class="col-md-9">
                                     <div class="input-group mb-3">
-                                        <input required class="form-control" type="text" name="bairro" value="{{$fornecedor->bairro}}">
-                                        <input required class="form-control" type="text" name="rua" value="{{$fornecedor->rua}}">
-                                        <input required class="form-control" type="text" name="numero" value="{{$fornecedor->numero}}">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">R$</span>
+                                        </div>
+                                        <input required class="form-control" type="text" placeholder="Preço unitário" value="{{$estoque->preco_unit}}" name="preco_unit" />
+                                        <input required class="form-control" type="text" placeholder="Preço total" value="{{$estoque->preco_total}}" name="preco_total" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row justify-content-center">
+                                <div class="col-md-9">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-balance-scale"></i></span>
+                                        </div>
+                                        <input required class="form-control" type="text" placeholder="Peso unitário" value="{{$estoque->peso_unit}}" name="peso_unit" />
+                                        <select class="form-control" name="unidade" id="exampleFormControlSelect1">
+                                            <option value="kg">Quilograma (Kg)</option>
+                                            <option value="g">Grama (g)</option>
+                                            <option value="mg">Miligrama (Mg)</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row justify-content-center">
                                 <div class="col-md-9">
                                     <button class="btn btn-success" type="submit">Salvar</button>
-                                    <a class="btn btn-primary" href="{{url('fornecedor')}}">Voltar</a>
+                                    <a class="btn btn-primary" href="{{url('estoque')}}">Voltar</a>
                                 </div>
                             </div>
                         </div>

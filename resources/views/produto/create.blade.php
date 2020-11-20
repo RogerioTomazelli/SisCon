@@ -4,6 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <br>
             <div class="card">
                 <div style="background-color: #222831; color: white"  class="card-header">{{ __('Cadastro de novo produto') }}</div>
 
@@ -43,7 +44,7 @@
                             <div class="form-group row justify-content-center">
                                 <div class="col-md-9">
                                     <div class="input-group mb-3">
-                                        <textarea class="form-control" placeholder="Descrição (opcional)" name="descricao" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                        <textarea required class="form-control" placeholder="Descrição" name="descricao" id="exampleFormControlTextarea1" rows="3"></textarea>
                                     </div>
                                 </div>
                             </div>

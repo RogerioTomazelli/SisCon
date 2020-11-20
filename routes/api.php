@@ -18,9 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/turma/store', 'Api\TurmaApiController@store');
-Route::put('/turma/update/{id}', 'Api\TurmaApiController@update');
-Route::get('/turma', 'Api\TurmaApiController@index');
-Route::get('/turma/{id}', 'Api\TurmaApiController@show');
-Route::delete('/turma/{id}', 'Api\TurmaApiController@destroy');
-Route::post('/turma/search', 'Api\TurmaApiController@search');
+Route::post('/estoque/store', 'Api\EstoqueApiController@store');
+Route::put('/estoque/update/{id}', 'Api\EstoqueApiController@update');
+Route::get('/estoque', 'Api\EstoqueApiController@index');
+Route::get('/estoque/{id}', 'Api\EstoqueApiController@show');
+Route::delete('/estoque/{id}', 'Api\EstoqueApiController@destroy');
+Route::post('/estoque/search', 'Api\EstoqueApiController@search');

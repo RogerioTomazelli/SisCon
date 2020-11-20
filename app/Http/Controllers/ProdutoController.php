@@ -90,23 +90,21 @@ class ProdutoController extends Controller
             'nome' => 'required|max:100',
             'categoria' => 'required',
         ]);
-
-        $objProduto = ProdutoModel::findorfail($request->id);
+        $objProduto = ProdutoModel::findOrfail($request->id);
         $objProduto->nome = $request->nome;
         $objProduto->categoria = $request->categoria;
         $objProduto->descricao = $request->descricao;
 
-        //dd($objProduto);
+        $objProduto->update();
 
-        $objProduto->save();
-
-        return redirect()->action('ProdutoController@index')->with('sucess', "Dados do produto editados!");
+        return redirect()->action('ProdutoController@index')
+            ->with('success', 'Dados do produto editados.');
     }
 
     public function remove($id)
     {
         $objProduto = ProdutoModel::findOrFail($id);
-        
+
         $objProduto->delete();
 
         return redirect()->action('ProdutoController@index')->with('sucess', "Produto removido!");

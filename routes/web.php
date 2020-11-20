@@ -27,6 +27,7 @@ Route::get('/', function () {
 Route::get('/materiais', function () {
     return view('materiais');
 });
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -57,5 +58,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/estoque/update/', 'EstoqueController@update');
     Route::post('/estoque/search/', 'EstoqueController@search');
 
-    Route::resource('Estoque', 'EstoqueController');
+    //Route::resource('Estoque', 'EstoqueController');
+
+    Route::get('/profile', 'UserController@index');
+    Route::get('/profile/create', 'UserController@create');
+    Route::post('/profile/store', 'UserController@store');
+    Route::get('/profile/edit/{id}', 'UserController@edit');
+    Route::get('/profile/remove/{id}', 'UserController@remove');
+    Route::post('/profile/update/', 'UserController@update');
+
+    Route::get('pdf', 'PDFController@geraPdf');
+
+    //Route::get('/graficos');
 });

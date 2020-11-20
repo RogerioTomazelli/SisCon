@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\EstoqueModel;
+use App\FornecedorModel;
+use App\ProdutoModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class EstoqueController extends Controller
 {
+    private $url = "http://localhost:8003/api/estoque/";
     /**
      * Display a listing of the resource.
      *
@@ -15,8 +18,16 @@ class EstoqueController extends Controller
      */
     public function index()
     {
-        $response = Http::get('http://localhost:8000/api/estoque');
+        /* IMPORTANTE!!!!
+        
+        Iniciar no VS Code: http://localhost:8001/api/estoque (para a aplicação)
+        Iciciar no GitBash: http://localhost:8002/api/estoque (para a API)
+
+        */
+        //$response = Http::get('http://localhost:8000/api/estoque');
+        $response = Http::get($this->url);
         $objEstoque = json_decode(json_encode($response->json()));
+        $objEstoque = EstoqueModel::orderBy("id")->get();
         return view('estoque.list')->with('estoques', $objEstoque);
     }
 
@@ -27,7 +38,11 @@ class EstoqueController extends Controller
      */
     public function create()
     {
-        return view("estoque.create");
+        $objProdutos = ProdutoModel::orderBy('id')->get();
+        $objFornecedores = FornecedorModel::orderBy('id')->get();
+        return view("estoque.create")
+            ->with('produtos', $objProdutos)
+            ->with('fornecedores', $objFornecedores);
     }
 
     /**
@@ -38,18 +53,29 @@ class EstoqueController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'produto_id' => 'required',
-            'fornecedor_id' => 'required',
-            'data' => 'required',
-            'quantidade' => 'required',
-            'preco_unit' => 'required',
-            'preco_total' => 'required',
-            'peso_unit' => 'required',
-            'unidade' => 'required',
+        $response = Http::post($this->url . "store", [
+
+            'produto_id' => $request->produto_id,
+            'fornecedor_id' => $request->fornecedor_id,
+            'data' => $request->data,
+            'quantidade' => $request->quantidade,
+            'preco_unit' => $request->preco_unit,
+            'preco_total' => $request->preco_total,
+            'peso_unit' => $request->peso_unit,
+            'unidade' => $request->unidade,
+
         ]);
 
-        $objEstoque = new EstoqueModel();
+        /*'produto_id' => 'required',
+        'fornecedor_id' => 'required',
+        'data' => 'required',
+        'quantidade' => 'required',
+        'preco_unit' => 'required',
+        'preco_total' => 'required',
+        'peso_unit' => 'required',
+        'unidade' => 'required',*/
+
+        /*$objEstoque = new EstoqueModel();
         $objEstoque->produto_id = $request->produto_id;
         $objEstoque->fornecedor_id = $request->fornecedor_id;
         $objEstoque->data = $request->data;
@@ -57,13 +83,13 @@ class EstoqueController extends Controller
         $objEstoque->preco_unit = $request->preco_unit;
         $objEstoque->preco_total = $request->preco_total;
         $objEstoque->peso_unit = $request->peso_unit;
-        $objEstoque->unidade = $request->unidade;
+        $objEstoque->unidade = $request->unidade;*/
 
         //dd($objEstoque);
 
-        $objEstoque->save();
+        //$objEstoque->save();
 
-        return \redirect()->action('EstoqueController@index')->with('sucess', "Dados do estoque salvos!");
+        return redirect()->action('EstoqueController@index')->with('sucess', "Dados do estoque salvos!");
     }
 
     /**
@@ -85,8 +111,13 @@ class EstoqueController extends Controller
      */
     public function edit($id)
     {
-        $objEstoque = EstoqueModel::findorfail($id);
-        return view('estoque.edit')->with('estoque', $objEstoque);
+        $response = Http::get($this->url . $id);
+        //$objEstoque = EstoqueModel::findorfail($id);
+        $objEstoque = json_decode(json_encode($response->json()));
+        $objProdutos = ProdutoModel::orderBy('id')->get();
+        $objFornecedores = FornecedorModel::orderBy('id')->get();
+
+        return view('estoque.edit')->with(['estoque' => $objEstoque, 'produtos' => $objProdutos, 'fornecedores' => $objFornecedores]);
     }
 
     /**
@@ -96,20 +127,27 @@ class EstoqueController extends Controller
      * @param  \App\EstoqueModel  $estoqueModel
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EstoqueModel $estoqueModel)
+    public function update(Request $request)
     {
-        $request->validate([
-            'produto_id' => 'required',
-            'fornecedor_id' => 'required',
-            'data' => 'required',
-            'quantidade' => 'required',
-            'preco_unit' => 'required',
-            'preco_total' => 'required',
-            'peso_unit' => 'required',
-            'unidade' => 'required',
+        $response = Http::put($this->url . "update/" . $request->id, [
+            'produto_id' => $request->produto_id,
+            'fornecedor_id' => $request->fornecedor_id,
+            'data' => $request->data,
+            'quantidade' => $request->quantidade,
+            'preco_unit' => $request->preco_unit,
+            'preco_total' => $request->preco_total,
+            'peso_unit' => $request->peso_unit,
+            'unidade' => $request->unidade,
         ]);
 
-        $objEstoque = EstoqueModel::findorfail($request->id);
+
+        if ($response->ok()) {
+            return redirect()->action('EstoqueController@index')->with('sucess', "Dados do estoque editados!");
+        } else {
+            dd($response);
+        }
+
+        /*$objEstoque = EstoqueModel::findorfail($request->id);
         $objEstoque->produto_id = $request->produto_id;
         $objEstoque->fornecedor_id = $request->fornecedor_id;
         $objEstoque->data = $request->data;
@@ -117,13 +155,11 @@ class EstoqueController extends Controller
         $objEstoque->preco_unit = $request->preco_unit;
         $objEstoque->preco_total = $request->preco_total;
         $objEstoque->peso_unit = $request->peso_unit;
-        $objEstoque->unidade = $request->unidade;
+        $objEstoque->unidade = $request->unidade;*/
 
         //dd($objEstoque);
 
-        $objEstoque->save();
-
-        return redirect()->action('EstoqueController@index')->with('sucess', "Dados do estoque editados!");
+        //$objEstoque->save();
 
     }
 
@@ -133,31 +169,40 @@ class EstoqueController extends Controller
      * @param  \App\EstoqueModel  $estoqueModel
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EstoqueModel $estoqueModel)
+    public function destroy($id)
     {
-        //
+        $response = Http::delete($this->url . $id);
+        return redirect()->action('EstoqueController@index')
+            ->with('success', 'Item do estoque vendido!');
     }
 
-    public function remove($id)
+    /*public function remove($id)
     {
         $objEstoque = EstoqueModel::findOrFail($id);
 
         $objEstoque->delete();
-        
-        return redirect()->action('FornecedorController@index')->with('sucess', "Item do estoque removido!");
-    }
+
+        return redirect()->action('EstoqueController@index')->with('sucess', "Item do estoque removido!");
+    }*/
 
     public function search(Request $request)
     {
-        if (!empty($request->nome)) {
-            $objEstoque = EstoqueModel::where('nome', 'like', '%' . $request->nome . '%')->get();
-        } else if (!empty($request->cnpj)) {
-            $objEstoque = EstoqueModel::where('cnpj', 'like', '%' . $request->cnpj . '%')->get();
+        /*if (!empty($request->produto_id)) {
+            $objEstoque = EstoqueModel::where('produto_id', 'like', '%' . $request->produto_id . '%')->get();
+        } else if (!empty($request->fornecedor_id)) {
+            $objEstoque = EstoqueModel::where('fornecedor_id', 'like', '%' . $request->fornecedor_id . '%')->get();
         } else {
             $objEstoque = EstoqueModel::orderBy('id')->get();
         }
 
-        return view('estoque.list')->with('estoque', $objEstoque);
-    }
+        return view('estoque.list')->with('estoques', $objEstoque);*/
 
+        $response = Http::post($this->url . "search", [
+            'produto_id' => $request->produto_id,
+        ]);
+
+        $objEstoque = json_decode(json_encode($response->json()));
+
+        return view('estoque.list')->with('estoques', $objEstoque);
+    }
 }
