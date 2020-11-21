@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div style="background-color: #222831; color: white" class="card-header">{{ __('Registrar a compra do produto') }}</div>
+                <div style="background-color: #222831; color: white" class="card-header">{{ __('Editar a compra do produto') }}</div>
 
                 <div class="card-body">
 

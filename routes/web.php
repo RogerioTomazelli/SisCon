@@ -67,7 +67,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/profile/remove/{id}', 'UserController@remove');
     Route::post('/profile/update/', 'UserController@update');
 
-    Route::get('pdf', 'PDFController@geraPdf');
-
     //Route::get('/graficos');
 });
