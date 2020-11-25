@@ -185,9 +185,9 @@ class EstoqueController extends Controller
         return redirect()->action('EstoqueController@index')->with('sucess', "Item do estoque removido!");
     }*/
 
-    public function search(Request $request)
+    /*public function search(Request $request)
     {
-        /*if (!empty($request->produto_id)) {
+        if (!empty($request->produto_id)) {
             $objEstoque = EstoqueModel::where('produto_id', 'like', '%' . $request->produto_id . '%')->get();
         } else if (!empty($request->fornecedor_id)) {
             $objEstoque = EstoqueModel::where('fornecedor_id', 'like', '%' . $request->fornecedor_id . '%')->get();
@@ -195,7 +195,7 @@ class EstoqueController extends Controller
             $objEstoque = EstoqueModel::orderBy('id')->get();
         }
 
-        return view('estoque.list')->with('estoques', $objEstoque);*/
+        return view('estoque.list')->with('estoques', $objEstoque);
 
         $response = Http::post($this->url . "search", [
             'produto_id' => $request->produto_id,
@@ -204,5 +204,20 @@ class EstoqueController extends Controller
         $objEstoque = json_decode(json_encode($response->json()));
 
         return view('estoque.list')->with('estoques', $objEstoque);
+    }*/
+
+    public function search(Request $request)
+    {
+
+        if (!empty($request->nome)) {
+            $objEstoque = EstoqueModel::where('produto', 'like', '%' . $request->nome . '%')->get();
+        } else if (!empty($request->nome)) {
+            $objEstoque = EstoqueModel::where('fornecedor', 'like', '%' . $request->nome . '%')->get();
+        } else {
+            $objEstoque = EstoqueModel::orderBy('id')->get();
+        }
+
+        return view('estoque.list')->with('estoques', $objEstoque);
     }
+
 }
