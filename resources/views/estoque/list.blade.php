@@ -48,7 +48,7 @@
                                 <td>{{$dados->data}}</td>
                                 <td>{{$dados->quantidade}}</td>
                                 <td><a class="btn btn-success" href="{{action('EstoqueController@edit',$dados->id)}}">Editar</a></td>
-                                <td><a class="btn btn-danger" href="{{action('EstoqueController@remove',$dados->id)}}" onclick="return confirm('Deseja realmente vender esse item do estoque?')">Vender</a></td>
+                                <td><a class="btn btn-danger" href="{{action('EstoqueController@destroy',$dados->id)}}" onclick="return confirm('Deseja realmente vender esse item do estoque?')">Vender</a></td>
                             </tr>
                             @endforeach
                         </tbody>

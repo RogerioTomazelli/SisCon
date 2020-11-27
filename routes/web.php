@@ -54,7 +54,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/estoque/create', 'EstoqueController@create');
     Route::post('/estoque/store', 'EstoqueController@store');
     Route::get('/estoque/edit/{id}', 'EstoqueController@edit');
-    Route::get('/estoque/remove/{id}', 'EstoqueController@remove');
+    Route::get('/estoque/remove/{id}', 'EstoqueController@destroy');
     Route::post('/estoque/update/', 'EstoqueController@update');
     Route::post('/estoque/search/', 'EstoqueController@search');
 
